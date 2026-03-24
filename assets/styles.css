@@ -31,8 +31,8 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 
 .container { max-width: 1200px; margin: 9px auto; padding: 0 7px; }
 
-.board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 380px); gap: 12px; align-items: start; overflow-x: auto; padding-bottom: 12px; }
-.lane { background: var(--lane); border: 1px solid var(--border); border-radius: 14px; padding: 12px; box-shadow: var(--shadow); min-height: 160px; }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(260px, 80vw, 360px); gap: 10px; align-items: start; overflow-x: auto; padding-bottom: 12px; }
+.lane { background: var(--lane); border: 1px solid var(--border); border-radius: 14px; padding: 12px; box-shadow: var(--shadow); min-height: 160px; width: 100%; max-width: none; }
 .lane-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .lane-title { font-weight: 700; font-size: 14px; padding: 6px 8px; border-radius: 8px; outline: none; border: 1px solid transparent; }
 .lane-title:focus { border-color: var(--primary); background: rgba(52, 31, 31, 0.02); }
@@ -45,7 +45,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .btn.small { padding: 6px 8px; font-size: 12px; }
 
 .cards { display: grid; gap: 8px; min-height: 40px; }
-.card { background: var(--card); border: 1px solid var(--border); border-left: 8px solid var(--primary); border-radius: 12px; padding: 10px 10px 8px 10px; box-shadow: var(--shadow); cursor: grab; }
+.card { background: var(--card); border: 1px solid var(--border); border-left: 8px solid var(--primary); border-radius: 12px; padding: 10px 10px 8px 10px; box-shadow: var(--shadow); cursor: grab; width: 100%; max-width: none; }
 .card:active { cursor: grabbing; }
 .card-title { font-weight: 600; margin: 0 0 6px 0; }
 .card-notes { color: var(--muted); font-size: 12px; white-space: pre-wrap; }
@@ -67,152 +67,32 @@ dialog::backdrop { background: rgba(0,0,0,.35); }
 .dialog menu { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; padding: 0; }
 .dialog .spacer { flex: 1; }
 
-@media (max-width: 480px) {
-  .board { grid-auto-columns: 88vw; }
-}
-/* === Controle simples de largura (vale p/ desktop e mobile) === */
-:root {
-  --card-w: 280px;   /* troque aqui: 280/300/340… */
-  --lane-gap: 6px;
+.card-title, .card-notes {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.board {
-  grid-auto-columns: calc(var(--card-w) + 24px);
-  gap: var(--lane-gap);
-}
-.lane {
-  width: calc(var(--card-w) + 24px);
-  max-width: calc(var(--card-w) + 24px);
-}
-.card {
-  width: min(100%, var(--card-w));
-  max-width: var(--card-w);
-  margin: 0 auto;
-}
-.card-title, .card-notes { overflow-wrap: anywhere; word-break: break-word; }
-
-/* Header da coluna: ações não “saltam” para fora */
-.lane-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 8px;
-}
-.lane-title { width: 100%; min-width: 0; }
-.lane-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-
-/* Mobile em paisagem: só reduz o tamanho-alvo */
-@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
-  :root { --card-w: 280px; --lane-gap: 10px; }  /* ajuste fino p/ celular deitado */
-}
-
-/* Centralizar as colunas dentro da página */
-.container { 
-  display: flex;              /* permite centralizar o filho */
-}
-
-.board {
-  width: min(100%, max-content);  /* encolhe até o tamanho das colunas */
-  margin-inline: auto;            /* centraliza quando sobrar espaço */
-  justify-content: center;        /* distribui o espaço restante nas laterais */
-}
-
-/* reset da centralização para não travar o início do scroll */
-.container { display: block; }
-.board {
-  width: auto;              /* volta ao fluxo normal */
-  margin-inline: 0;         /* sem margem automática */
-  justify-content: start;   /* colunas começam do lado esquerdo */
-}
-
-/* 1) Mobile/touch: garanta que dá para alcançar a primeira e a última coluna */
-@media (hover: none) and (pointer: coarse) {
-  .board{
-    padding: 0 12px 12px 12px;   /* espaço nas bordas da área rolável */
-    scroll-padding-inline: 12px; /* se houver scroll-snap, alinha no padding */
-    overscroll-behavior-x: contain;
-    touch-action: pan-x;         /* prioriza arrasto horizontal */
-  }
-  .lane{ 
-    scroll-margin-inline: 12px;  /* faz a coluna “encaixar” na borda visível */
+/* Mobile */
+@media (max-width: 768px) {
+  .board {
+    grid-auto-columns: clamp(240px, 86vw, 320px);
+    gap: 8px;
+    scroll-behavior: smooth;
   }
 }
 
-/* 2) Se ainda “travar”, desligue o snap no touch */
-@media (hover: none) and (pointer: coarse) {
-  .board{ scroll-snap-type: none !important; }
-  .lane{  scroll-snap-align: none !important; }
-}
-
-@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
-  :root { --lane-w: 300px; --lane-gap: 10px; }
-  .board { grid-auto-columns: var(--lane-w) !important; gap: var(--lane-gap) !important; }
-  .lane  { width: var(--lane-w) !important; max-width: var(--lane-w) !important; }
-  .card  { max-width: calc(var(--lane-w) - 20px) !important; margin: 0 auto; }
-}
-
-/* Desktop (mouse/teclado): centraliza os cards e desfaz limites móveis */
-@media (hover: hover) and (pointer: fine) {
-  .board { 
-    grid-auto-columns: minmax(320px, 1fr);  /* colunas elásticas no desktop */
+/* Desktop */
+@media (min-width: 769px) {
+  .board {
+    grid-auto-columns: clamp(300px, 32vw, 420px);
     gap: 12px;
-    padding: 0;                              /* sem padding extra do touch */
-    scroll-snap-type: none;                  /* garante que não há snap no desktop */
-  }
-  .lane {
-    width: auto !important;
-    max-width: none !important;              /* remove teto que usamos no mobile */
-  }
-  .cards {
-    justify-items: center;                   /* centraliza itens do grid */
-  }
-  .card {
-    width: 100%;
-    max-width: 680px;                        /* largura confortável no desktop */
-    margin: 0;                               /* grid já centraliza */
-  }
-  .card-title, .card-notes {
-    overflow-wrap: anywhere;
-    word-break: break-word;
   }
 }
 
-/* Mobile em paisagem: libere a rolagem vertical dentro do board */
-@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
-  .board{
-    touch-action: auto !important;          /* permite pan X e Y */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-  }
-  /* Mantém cartões responsivos sem travar o scroll */
-  .card{
-    touch-action: manipulation;             /* não bloqueia o pan vertical */
-  }
-}
-
-
-/* ===== Mobile/touch: rolagem livre e bordas com "berço" ===== */
+/* Touch UX */
 @media (hover: none) and (pointer: coarse) {
-  .board{
-    padding: 0 12px 12px;
-    scroll-padding-inline: 12px;
+  .board {
     -webkit-overflow-scrolling: touch;
-    /* IMPORTANTE: não limite o gesto a pan-x e não bloqueie o y */
-    touch-action: auto !important;
-    overscroll-behavior: auto !important;
+    overscroll-behavior-x: contain;
   }
-  .lane{ scroll-margin-inline: 12px; }
-  /* Os cards continuam clicáveis sem bloquear scroll vertical */
-  .card{ touch-action: auto !important; }
-}
-
-/* ===== Mobile em paisagem: largura travada sem afetar o scroll ===== */
-@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
-  :root { --lane-w: 300px; --lane-gap: 10px; } /* ajuste fino: 260/280/300/320 */
-  .board { 
-    grid-auto-columns: var(--lane-w) !important;
-    gap: var(--lane-gap) !important;
-  }
-  .lane  { width: var(--lane-w) !important; max-width: var(--lane-w) !important; }
-  .card  { max-width: calc(var(--lane-w) - 20px) !important; margin: 0 auto; }
 }
