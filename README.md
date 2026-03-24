@@ -19,6 +19,10 @@ Quadro Kanban minimalista, salva no `localStorage`, funciona offline (PWA) e sup
 - **Zerar Board** apaga o estado salvo.
 
 
+## Repositório público no GitHub
+
+- Código-fonte: https://github.com/viniciuslopes-dev/kanban_offiline
+
 #### Sinta-se à vontade para abrir *issues*, sugerir melhorias e enviar *pull requests*.
 
 Bom uso! 🚀
