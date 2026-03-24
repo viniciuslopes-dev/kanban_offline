@@ -29,9 +29,24 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .topbar h1 { margin: 0; font-size: 18px; letter-spacing: .3px; }
 .actions { display: flex; gap: 8px; align-items: center; }
 
-.container { max-width: 1200px; margin: 9px auto; padding: 0 7px; }
+.container {
+  width: min(calc(100% - 2rem), 1440px);
+  margin: 9px auto;
+  margin-inline: auto;
+  padding-inline: clamp(8px, 2vw, 24px);
+}
 
-.board { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(260px, 80vw, 360px); gap: 10px; align-items: start; overflow-x: auto; padding-bottom: 12px; }
+.board {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(260px, 80vw, 360px);
+  gap: 10px;
+  align-items: start;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  padding-inline: clamp(8px, 2vw, 24px);
+  scroll-padding-inline: clamp(8px, 2vw, 24px);
+}
 .lane { background: var(--lane); border: 1px solid var(--border); border-radius: 14px; padding: 12px; box-shadow: var(--shadow); min-height: 160px; width: 100%; max-width: none; }
 .lane-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .lane-title { font-weight: 700; font-size: 14px; padding: 6px 8px; border-radius: 8px; outline: none; border: 1px solid transparent; }
@@ -55,7 +70,16 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 .dropzone { border: 2px dashed transparent; border-radius: 12px; transition: 120ms border-color ease-in; padding: 4px; }
 .dropzone.over { border-color: var(--primary); }
 
-.footer { margin: 28px auto; max-width: 1200px; padding: 0 14px; display: flex; justify-content: space-between; align-items: center; color: var(--muted); }
+.footer {
+  width: min(calc(100% - 2rem), 1440px);
+  margin: 28px auto;
+  margin-inline: auto;
+  padding-inline: clamp(8px, 2vw, 24px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+}
 
 /* Dialog */
 dialog { border: none; border-radius: 14px; background: var(--card); color: var(--text); box-shadow: var(--shadow); padding: 0; }
