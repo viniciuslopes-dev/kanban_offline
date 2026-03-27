@@ -21,7 +21,7 @@ Quadro Kanban minimalista, salva no `localStorage`, funciona offline (PWA) e sup
 
 ## Repositório público no GitHub
 
-- Código-fonte: https://github.com/viniciuslopes-dev/kanban_offiline
+- Acesse: [https://github.com/viniciuslopes-dev/kanban_offiline](https://viniciuslopes-dev.github.io/kanban_offline/)
 
 #### Sinta-se à vontade para abrir *issues*, sugerir melhorias e enviar *pull requests*.
 
